@@ -1,10 +1,10 @@
 /*
- * @LastEditTime: 2024-06-06 21:50:02
- * @LastEditors: liaodaxue
+ * @LastEditTime: 2024-06-09 17:36:09
+ * @LastEditors: Jack Zhuang 50353452+hotlong@users.noreply.github.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import React from 'react';
-import { builder } from '@builder6/sdk';
+import { builder, Builder } from '@builder6/sdk';
 import Head from 'next/head';
 import { headers } from 'next/headers'
 
@@ -31,25 +31,18 @@ export default async function Page(props: PageProps) {
 
   // Replace with your Public API Key
   builder.init(projectId);
+  Builder.overrideHost = process.env.NEXT_PUBLIC_B6_CDN_URL;
 
   const pageId = (props?.params?.page?.join('/') || '');
   const content = await builder
     .get('page', {
-      entry: pageId,
-      query: {
-        data: {
-          myCustomField: 'someValue',
-          someNumber: { $ne: 2 }
-        }
-      },
       userAttributes: {
         urlPath: '/' + (props?.params?.page?.join('/') || ''),
       },
       prerender: false,
     })
     .toPromise();
-
-  console.log(content)
+  console.log(content?.id)
 
   return (
     <>
