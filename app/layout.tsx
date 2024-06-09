@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-09 18:29:31
+ * @LastEditTime: 2024-06-09 19:21:01
  * @LastEditors: Jack Zhuang 50353452+hotlong@users.noreply.github.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -43,7 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     if (header?.fields.builder) {
       try {
         builderJson = JSON.parse(header?.fields.builder as string);
-        console.log('Retrieved builderJson', builderJson?.id);
+        // console.log('Retrieved builderJson', builderJson);
       } catch(e) {
         console.error(e);
       }
