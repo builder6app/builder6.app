@@ -1,0 +1,10 @@
+{
+	// 头部注释,默认设置：{'Author':'git config user.name && git config user.email','Date':'Do not edit','LastEditors':'git config user.name','LastEditTime':'Do not edit','Description':'file content'}
+	"fileheader.customMade": {
+    "Author": "git config user.name && git config user.email",
+    "Date": "Do not edit", // 文件创建时间(不变)
+    // 文件最后编辑者
+    "LastEditors": "git config user.name && git config user.email", 
+    "LastEditTime": "Do not edit", // 文件最后编辑时间
+  },
+}
