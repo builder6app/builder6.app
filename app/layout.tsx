@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-12 11:57:57
+ * @LastEditTime: 2024-06-12 14:38:03
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -55,8 +55,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const enable_tabs = project?.fields.enable_tabs;
   let sidebarItemsSection, sidebarHomeSection;
   if (enable_tabs) {
-    sidebarItemsSection = await getSidebarItemsSection(project);
-    sidebarHomeSection = await getSidebarHomeSection(project);
+    sidebarItemsSection = await getSidebarItemsSection(project?.fields);
+    sidebarHomeSection = await getSidebarHomeSection(project?.fields);
   }
 
   return (
