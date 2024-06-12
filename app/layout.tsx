@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-12 14:38:03
+ * @LastEditTime: 2024-06-12 16:46:20
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -71,6 +71,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           enable_tabs ?
             (
               <SidebarLayout
+                topOffset={80}
+                className="abc"
                 navbar={
                   <Navbar>
                   </Navbar>
