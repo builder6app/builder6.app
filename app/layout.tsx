@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-12 16:46:20
+ * @LastEditTime: 2024-06-13 09:32:42
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,7 +18,8 @@ import {
   SidebarBody,
   SidebarHeader
 } from '@/components/sidebar'
-
+import Script from 'next/script';
+import { builder, Builder } from '@builder6/sdk';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 
@@ -59,9 +60,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     sidebarHomeSection = await getSidebarHomeSection(project?.fields);
   }
 
+  const unpkgUrl = Builder.settings["unpkgUrl"] || 'https://unpkg.steedos.cn';
+  const amisVersion = Builder.settings["amisVersion"] || '6.5.0';
+  const amisTheme = Builder.settings["amisTheme"] || 'antd';
+
   return (
     <html lang="zh">
       <head>
+        <Script src={`${unpkgUrl}/amis@${amisVersion}/sdk/sdk.js`} strategy="beforeInteractive" />
+        <link rel="stylesheet" href={`${unpkgUrl}/amis@${amisVersion}/sdk/${amisTheme}.css`} />
       </head>
       <body>
         {builderJson && (
