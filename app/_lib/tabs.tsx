@@ -2,11 +2,11 @@
  * @Author: 殷亮辉 yinlianghui@hotoa.com
  * @Date: 2024-06-03 10:03:32
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
- * @LastEditTime: 2024-06-13 09:43:48
+ * @LastEditTime: 2024-06-13 11:00:04
  * @FilePath: /builder6/frontend/src/app/(interfaces)/interfaces/lib/data.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { getPage } from "./data";
+import { base, getProjectId } from '@/lib/b6BuilderDB';
 import {
     SidebarSection,
     SidebarItem,
@@ -24,7 +24,7 @@ const convertTabItemForSidebarItem = async function (tab: any) {
     } else if (tab.type === "page") {
         // 显示为对应的page的name，链接到page的url
         try {
-            let page: any = await getPage(tab.page);
+            let page: any = await base('b6_pages').find(tab.page);
             page = page.fields;
             if (page) {
                 return {

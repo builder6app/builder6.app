@@ -2,7 +2,7 @@
  * @Author: 殷亮辉 yinlianghui@hotoa.com
  * @Date: 2024-06-12 10:18:37
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
- * @LastEditTime: 2024-06-12 11:00:31
+ * @LastEditTime: 2024-06-13 11:03:41
  */
 import Builder6 from '@builder6/builder6.js';
 
@@ -22,13 +22,4 @@ export const getProjectId = (host?: string)=>{
     projectId = host.split('.')[0]
   }
   return projectId;
-}
-
-export const getRecord = async (tableId: string, id: string)=>{
-    try {
-        return await base(tableId).find(id);
-    } catch (error: any) {
-        console.error(`getRecord error`, error.message)
-        return null
-    }
 }
