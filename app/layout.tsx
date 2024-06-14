@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-13 10:57:59
+ * @LastEditTime: 2024-06-14 17:40:03
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -8,7 +8,7 @@ import './globals.css';
 import { headers } from 'next/headers'
 import Builder6 from '@builder6/builder6.js';
 import { RenderBuilderContent } from '@/components/builder6';
-import { base, getProjectId } from '@/lib/b6BuilderDB';
+import { bjs, base, getProjectId } from '@/lib/b6BuilderDB';
 import { getSidebarItemsSection, getSidebarHomeSection } from './_lib/tabs';
 import { SidebarLayout } from '@/components/sidebar-layout'
 import { Navbar } from '@/components/navbar'
@@ -28,18 +28,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const host = headersList.get('host') || 'localhost';
 
   // 使用正则表达式提取前缀
-  let projectId = getProjectId(host);
+  let projectId = await getProjectId(host);
 
   if (!projectId) return (<>projectId not found</>);
 
   let builderJson = {};
-  const project = await base('b6_projects').find(projectId);
+  const project: any = await base('b6_projects').find(projectId);
   if (!project) return (<>project not found:{projectId}</>);
+  const baseId = `spc-${project.space}`;
+  const baseSpc = bjs.base(baseId);
   console.log('Retrieved project', project?.id);
 
   const headerId = project?.fields.header as string;
   if (headerId) {
-    const header = await base('b6_components').find(headerId);
+    const header = await baseSpc('b6_components').find(headerId);
     console.log('Retrieved component', header?.id);
     if (header?.fields.builder) {
       try {
