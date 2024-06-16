@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-14 18:02:12
+ * @LastEditTime: 2024-06-16 11:36:04
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -30,6 +30,7 @@ export default async function Page(props: PageProps) {
   // Replace with your Public API Key
   builder.init(projectId);
   Builder.overrideHost = process.env.NEXT_PUBLIC_B6_CDN_URL;
+  console.log("======projectId===11===", projectId, host);
 
   const pageId = (props?.params?.page?.join('/') || '');
   const content = await builder
