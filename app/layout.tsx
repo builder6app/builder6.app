@@ -6,9 +6,8 @@
 import '@/styles/tailwind.css'
 import './globals.css';
 import { headers } from 'next/headers'
-import Builder6 from '@builder6/builder6.js';
+import BuilderJS from '@builder6/builder6.js' 
 import { RenderBuilderContent } from '@/components/builder6';
-import { bjs, base, getProjectId } from '@/lib/b6BuilderDB';
 import { getSidebarItemsSection, getSidebarHomeSection } from './_lib/tabs';
 import { SidebarLayout } from '@/components/sidebar-layout'
 import { Navbar } from '@/components/navbar'
@@ -20,6 +19,14 @@ import {
 import Script from 'next/script';
 import { builder, Builder } from '@builder6/sdk';
 
+
+const endpointUrl = process.env.B6_CLOUD_API
+const apiKey = process.env.B6_CLOUD_PROJECT_SECRET
+
+const bjs = new BuilderJS({endpointUrl, apiKey});
+const metaBase = bjs.base("meta-builder6-com");
+
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 
   const headersList = headers()
@@ -28,20 +35,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const host = headersList.get('host') || 'localhost';
 
   // 使用正则表达式提取前缀
-  let projectId = await getProjectId(host);
+  let domainName = host?.split('.')[0] || "";
+  const domain: any = await metaBase('b6_domains').find(domainName);
+  if (!domain) return (<>domain not found</>);
 
-  if (!projectId) return (<>projectId not found</>);
+  const {project_id, space} = domain;
 
+  const spaceBase = bjs.base(`spc-${space}`);
   let builderJson = {};
-  const project: any = await base('b6_projects').find(projectId);
-  if (!project) return (<>project not found:{projectId}</>);
-  const baseId = `spc-${project.space}`;
-  const baseSpc = bjs.base(baseId);
-  console.log('Retrieved project', project?.id);
+  const project: any = await spaceBase('b6_projects').find(project_id);
+  if (!project) return (<>project not found:{project_id}</>);
 
   const headerId = project?.fields.header as string;
   if (headerId) {
-    const header = await baseSpc('b6_components').find(headerId);
+    const header = await spaceBase('b6_components').find(headerId);
     console.log('Retrieved component', header?.id);
     if (header?.fields.builder) {
       try {
