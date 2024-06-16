@@ -80,7 +80,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Script src={`${unpkgUrl}/amis@${amisVersion}/sdk/sdk.js`} strategy="beforeInteractive" />
         <link rel="icon" type="image/svg" href="/logo.svg"/>
         <link rel="stylesheet" href="https://unpkg.steedos.cn/@salesforce-ux/design-system@2.24.3/css/icons/base/index.css"/>
+
         <link rel="stylesheet" href={`${unpkgUrl}/amis@${amisVersion}/sdk/${amisTheme}.css`} />
+        <script src="https://unpkg.steedos.cn/flowbite@2.3.0/dist/flowbite.min.js"></script>
       </head>
       <body>
         {builderJson && (
