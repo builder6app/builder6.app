@@ -36,9 +36,10 @@ const getPage = async (pageUrl: string) => {
   // 使用正则表达式提取前缀
   let domainName = host?.split('.')[0] || "";
   const domain: any = await metaBase('b6_domains').find(domainName);
+  console.log('Retrieved domain', domain.id);
   if (!domain) return (<>domain not found</>);
 
-  const {project_id, space} = domain;
+  const {project_id, space} = domain.fields;
 
   const base = await bjs.base(`spc-${space}`);
 

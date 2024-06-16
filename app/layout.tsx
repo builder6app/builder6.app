@@ -38,19 +38,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // 使用正则表达式提取前缀
   let domainName = host?.split('.')[0] || "";
   const domain: any = await metaBase('b6_domains').find(domainName);
+  console.log('Retrieved domain', domain.id);
   if (!domain) return (<>domain not found</>);
 
-  const {project_id, space} = domain;
+  const {project_id, space} = domain.fields;
 
   const spaceBase = bjs.base(`spc-${space}`);
   let builderJson = {};
   const project: any = await spaceBase('b6_projects').find(project_id);
+  console.log('Retrieved project', project.id);
   if (!project) return (<>project not found:{project_id}</>);
 
   const headerId = project?.fields.header as string;
   if (headerId) {
     const header = await spaceBase('b6_components').find(headerId);
-    console.log('Retrieved component', header?.id);
+    console.log('Retrieved header', header.id);
     if (header?.fields.builder) {
       try {
         builderJson = JSON.parse(header?.fields.builder as string);
