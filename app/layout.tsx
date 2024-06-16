@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-16 15:32:34
+ * @LastEditTime: 2024-06-16 21:37:28
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -46,7 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const spaceBase = bjs.base(`spc-${space}`);
   let builderJson = {};
   const project: any = await spaceBase('b6_projects').find(project_id);
-  console.log('Retrieved project', project.id);
+  console.log('Retrieved project', project?.id);
   if (!project) return (<>project not found:{project_id}</>);
 
   const headerId = project?.fields.header as string;
