@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-14 17:40:03
+ * @LastEditTime: 2024-06-16 15:32:34
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,6 +18,7 @@ import {
 } from '@/components/sidebar'
 import Script from 'next/script';
 import { builder, Builder } from '@builder6/sdk';
+import { isEmpty } from 'lodash';
 
 
 const endpointUrl = process.env.B6_CLOUD_API
@@ -53,7 +54,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     if (header?.fields.builder) {
       try {
         builderJson = JSON.parse(header?.fields.builder as string);
-        // console.log('Retrieved builderJson', builderJson);
+        console.log('Retrieved builderJson', builderJson);
       } catch (e) {
         console.error(e);
       }
@@ -85,7 +86,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           enable_tabs ?
             (
               <SidebarLayout
-                topOffset={80}
+                topOffset={ isEmpty(builderJson) ? 0 : 80}
                 className="abc"
                 navbar={
                   <Navbar>
