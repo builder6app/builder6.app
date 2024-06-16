@@ -2,12 +2,12 @@
  * @Author: 殷亮辉 yinlianghui@hotoa.com
  * @Date: 2024-06-12 10:18:37
  * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
- * @LastEditTime: 2024-06-14 18:03:59
+ * @LastEditTime: 2024-06-16 09:41:36
  */
 import BuilderJS from '@builder6/builder6.js' 
 
 const NEXT_PUBLIC_B6_CDN_API_KEY = process.env.NEXT_PUBLIC_B6_CDN_API_KEY;
-const NEXT_PUBLIC_B6_HOST = process.env.NEXT_PUBLIC_B6_HOST;
+const NEXT_PUBLIC_B6_APP_HOST = process.env.NEXT_PUBLIC_B6_APP_HOST;
 
 const endpointUrl = process.env.NEXT_PUBLIC_B6_API_URL
 const apiKey = process.env.NEXT_PUBLIC_B6_API_KEY
@@ -30,7 +30,7 @@ export const getProjectId = async (host?: string) => {
   // console.log("===getProjectId===host===", host)
   // 使用正则表达式提取前缀
   if (!host?.endsWith("builder6.app")) {
-    host = NEXT_PUBLIC_B6_HOST;
+    host = NEXT_PUBLIC_B6_APP_HOST;
   }
 
   let projectId = "";
