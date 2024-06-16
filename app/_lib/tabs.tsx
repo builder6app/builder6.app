@@ -6,7 +6,6 @@
  * @FilePath: /builder6/frontend/src/app/(interfaces)/interfaces/lib/data.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { base, getProjectId } from '@/lib/b6BuilderDB';
 import {
     SidebarSection,
     SidebarItem,
@@ -17,36 +16,12 @@ import {
     HomeIcon
 } from '@heroicons/react/20/solid'
 
-const convertTabItemForSidebarItem = async function (tab: any) {
-    if (tab.type === "url") {
-        // 显示为name，链接到url，不用处理
-        return tab;
-    } else if (tab.type === "page") {
-        // 显示为对应的page的name，链接到page的url
-        try {
-            let page: any = await base('b6_pages').find(tab.page);
-            page = page.fields;
-            if (page) {
-                return {
-                    ...tab,
-                    name: page.name,
-                    url: page.url || `/${page._id}`
-                }
-            }
-            else {
-                return tab;
-            }
-        } catch (error) {
-            return tab;
-        }
-    }
-}
 
 export async function getSidebarItemsSection(project: any) {
     const tabs: any = project?.tabs || [];
     const tabsConverted: any = [];
     for (var i = 0; i < tabs.length; i++) {
-        tabsConverted.push(await convertTabItemForSidebarItem(tabs[i]));
+        tabsConverted.push(tabs[i]);
     }
     return (
         <SidebarSection>

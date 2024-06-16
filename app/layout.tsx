@@ -32,8 +32,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   const headersList = headers()
 
-  // 从请求头中获取主机名
-  const host = headersList.get('host') || 'localhost';
+  // 从请求头中获取主机名，开发环境可配置环境变量
+  const host = process.env.NEXT_PUBLIC_B6_HOST_OVERRIDE || headersList.get('host');
 
   // 使用正则表达式提取前缀
   let domainName = host?.split('.')[0] || "";
