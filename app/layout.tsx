@@ -78,6 +78,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="zh">
       <head>
         <Script src={`${unpkgUrl}/amis@${amisVersion}/sdk/sdk.js`} strategy="beforeInteractive" />
+        <link rel="icon" type="image/svg" href="/logo.svg"/>
+        <link rel="stylesheet" href="https://unpkg.steedos.cn/@salesforce-ux/design-system@2.24.3/css/icons/base/index.css"/>
         <link rel="stylesheet" href={`${unpkgUrl}/amis@${amisVersion}/sdk/${amisTheme}.css`} />
       </head>
       <body>
