@@ -72,6 +72,10 @@ export async function generateMetadata({ params }: PageProps,
   }
 }
 
+const unpkgUrl = Builder.settings["unpkgUrl"] || 'https://unpkg.steedos.cn';
+const amisVersion = Builder.settings["amisVersion"] || '6.5.0';
+const amisTheme = Builder.settings["amisTheme"] || 'antd';
+
  
 export default async function Page({ params }: PageProps) {
 
@@ -85,6 +89,12 @@ export default async function Page({ params }: PageProps) {
       builderJson.name = page.name;
       return (
         <>
+
+          <script src={`${unpkgUrl}/amis@${amisVersion}/sdk/sdk.js`}></script>
+          <link rel="stylesheet" href={`${unpkgUrl}/amis@${amisVersion}/sdk/${amisTheme}.css`} />
+          <link rel="stylesheet" href={`${unpkgUrl}/@salesforce-ux/design-system@2.24.3/css/icons/base/index.css`}/>
+          <script src={`${unpkgUrl}/flowbite@2.3.0/dist/flowbite.min.js`}></script>
+
           {/* Render the Builder page */}
           <RenderBuilderContent content={builderJson}/>
         </>

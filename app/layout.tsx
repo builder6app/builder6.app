@@ -21,100 +21,16 @@ import { builder, Builder } from '@builder6/sdk';
 import { isEmpty } from 'lodash';
 
 
-const endpointUrl = process.env.B6_CLOUD_API
-const apiKey = process.env.B6_CLOUD_PROJECT_SECRET
-
-const bjs = new BuilderJS({endpointUrl, apiKey});
-const metaBase = bjs.base("meta-builder6-com");
-
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
 
-  const headersList = headers()
-
-  // 从请求头中获取主机名，开发环境可配置环境变量
-  const host = process.env.NEXT_PUBLIC_B6_HOST_OVERRIDE || headersList.get('host');
-
-  // 使用正则表达式提取前缀
-  let domainName = host?.split('.')[0] || "";
-  const domain: any = await metaBase('b6_domains').find(domainName);
-  console.log('Retrieved domain', domain.id);
-  if (!domain) return (<>domain not found</>);
-
-  const {project_id, space} = domain.fields;
-
-  const spaceBase = bjs.base(`spc-${space}`);
-  let builderJson = {};
-  const project: any = await spaceBase('b6_projects').find(project_id);
-  console.log('Retrieved project', project?.id);
-  if (!project) return (<>project not found:{project_id}</>);
-
-  const headerId = project?.fields.header as string;
-  if (headerId) {
-    const header = await spaceBase('b6_components').find(headerId);
-    console.log('Retrieved header', header.id);
-    if (header?.fields.builder) {
-      try {
-        builderJson = JSON.parse(header?.fields.builder as string);
-        console.log('Retrieved builderJson', builderJson);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
-
-  const enable_tabs = project?.fields.enable_tabs;
-  let sidebarItemsSection, sidebarHomeSection;
-  if (enable_tabs) {
-    sidebarItemsSection = await getSidebarItemsSection(project?.fields);
-    sidebarHomeSection = await getSidebarHomeSection(project?.fields);
-  }
-
-  const unpkgUrl = Builder.settings["unpkgUrl"] || 'https://unpkg.steedos.cn';
-  const amisVersion = Builder.settings["amisVersion"] || '6.5.0';
-  const amisTheme = Builder.settings["amisTheme"] || 'antd';
 
   return (
     <html lang="zh">
       <head>
-        <Script src={`${unpkgUrl}/amis@${amisVersion}/sdk/sdk.js`} strategy="beforeInteractive" />
         <link rel="icon" type="image/svg" href="/logo.svg"/>
-        <link rel="stylesheet" href="https://unpkg.steedos.cn/@salesforce-ux/design-system@2.24.3/css/icons/base/index.css"/>
-
-        <link rel="stylesheet" href={`${unpkgUrl}/amis@${amisVersion}/sdk/${amisTheme}.css`} />
-        <script src="https://unpkg.steedos.cn/flowbite@2.3.0/dist/flowbite.min.js"></script>
       </head>
       <body>
-        {builderJson && (
-          <RenderBuilderContent content={builderJson} />
-        )}
-        {
-          enable_tabs ?
-            (
-              <SidebarLayout
-                topOffset={ isEmpty(builderJson) ? 0 : 80}
-                className="abc"
-                navbar={
-                  <Navbar>
-                  </Navbar>
-                }
-                sidebar={
-                  <Sidebar>
-                    <SidebarHeader>
-                      {sidebarHomeSection}
-                    </SidebarHeader>
-                    <SidebarBody>
-                      {sidebarItemsSection}
-                    </SidebarBody>
-                  </Sidebar>
-                }
-              >
-                {/* The page content */}
-                {children}
-              </SidebarLayout>
-            ) :
-            (children)
-        }
+          {children}
       </body>
     </html>
   );
