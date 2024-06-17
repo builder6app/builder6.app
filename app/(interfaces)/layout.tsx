@@ -20,8 +20,7 @@ interface PageProps {
 }
 
 const NAV_DEFAULT = `
-    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 border-b"
-        style="backdrop-filter: saturate(180%) blur(20px);background: var(--localnav-background-stuck, rgba(251,251,253,0.8)); transition: background 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);">
+    <nav class="min-h-[52px] bg-[rgba(251,251,253,0.8)] border-[rgba(255,255,255,0.24)] px-4 lg:px-6 py-2.5 dark:bg-[rgba(22,22,23,0.8)] dark:border-[rgba(255,255,255,0.24)] border-b backdrop-saturate-150 backdrop-blur-lg bg-opacity-80 transition-colors duration-500 ease-in-out">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <a href="/" class="flex items-center">
                 <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{{name}}</span>
@@ -37,7 +36,7 @@ const NAV_DEFAULT = `
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     {% for tab in tabs %}
                     <li>
-                        <a href="{{ tab.url }}" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">{{ tab.name }}</a>
+                        <a href="{{ tab.url }}" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-200 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">{{ tab.name }}</a>
                     </li>
                     {% endfor %}
                 </ul>
