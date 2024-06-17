@@ -20,7 +20,6 @@ interface PageProps {
 }
 
 const NAV_DEFAULT = `
-<header>
     <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 border-b"
         style="backdrop-filter: saturate(180%) blur(20px);background: var(--localnav-background-stuck, rgba(251,251,253,0.8)); transition: background 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -45,7 +44,6 @@ const NAV_DEFAULT = `
             </div>
         </div>
     </nav>
-</header>
 `
 
 const endpointUrl = process.env.B6_CLOUD_API
@@ -107,7 +105,18 @@ export default async function AppLayout( { params, children }: PageProps) {
           <RenderBuilderContent content={headerJson} />
         )}
         {enable_tabs && tabs && (
-          <LiquidTemplate template={NAV_DEFAULT} data={{...project.fields}}/>
+          <LiquidTemplate template={NAV_DEFAULT} 
+            data={{...project.fields}} 
+            style={{
+              position: 'sticky',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '52px',
+              minWidth: '1280px',
+              zIndex: 9997
+            }}
+          />
         )}
         {children}
     </>
