@@ -112,7 +112,6 @@ export default async function AppLayout( { params, children }: PageProps) {
               top: 0,
               left: 0,
               width: '100%',
-              height: '52px',
               zIndex: 9997
             }}
           />
