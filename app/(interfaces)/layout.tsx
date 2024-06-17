@@ -21,7 +21,7 @@ interface PageProps {
 
 const NAV_DEFAULT = `
     <nav class="min-h-[52px] bg-[rgba(251,251,253,0.8)] border-[rgba(255,255,255,0.24)] px-4 lg:px-6 py-2.5 dark:bg-[rgba(22,22,23,0.8)] dark:border-[rgba(255,255,255,0.24)] border-b backdrop-saturate-150 backdrop-blur-lg bg-opacity-80 transition-colors duration-500 ease-in-out">
-        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+        <div class="flex flex-wrap justify-between lg:justify-normal items-center mx-auto max-w-screen-xl">
             <a href="/" class="flex items-center">
                 <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{{name}}</span>
             </a>
@@ -33,7 +33,7 @@ const NAV_DEFAULT = `
                     </svg>
                 </button>
             </div>
-            <div class="hidden justify-left items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-nav">
+            <div class="hidden justify-left items-center w-full lg:flex lg:w-auto lg:order-1 lg:pl-16" id="mobile-menu-nav">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     {% for tab in tabs %}
                     <li>
