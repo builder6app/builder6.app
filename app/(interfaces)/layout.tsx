@@ -20,24 +20,24 @@ interface PageProps {
 }
 
 const NAV_DEFAULT = `
-    <nav class="min-h-[52px] bg-[rgba(251,251,253,0.8)] border-[rgba(255,255,255,0.24)] px-4 lg:px-6 py-2.5 dark:bg-[rgba(22,22,23,0.8)] dark:border-[rgba(255,255,255,0.24)] border-b backdrop-saturate-150 backdrop-blur-lg bg-opacity-80 transition-colors duration-500 ease-in-out">
+    <nav class="min-h-[52px] bg-white/80 text-gray-800 px-4 lg:px-6 py-2.5 border-b backdrop-saturate-150 backdrop-blur-lg bg-opacity-80 transition-colors duration-500 ease-in-out">
         <div class="flex flex-wrap justify-between lg:justify-normal items-center mx-auto max-w-screen-xl">
-            <a href="/" class="flex items-center">
-                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{{name}}</span>
+            <a href="/" class="flex items-center lg:pr-6">
+                <span class="self-center text-xl font-semibold whitespace-nowrap ">{{name}}</span>
             </a>
             <div class="flex lg:hidden">
-                <button data-collapse-toggle="mobile-menu-nav" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-nav" aria-expanded="false">
+                <button data-collapse-toggle="mobile-menu-nav" type="button" class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 aria-controls="mobile-menu-nav" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                     </svg>
                 </button>
             </div>
-            <div class="hidden justify-left items-center w-full lg:flex lg:w-auto lg:order-1 lg:pl-16" id="mobile-menu-nav">
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+            <div class="hidden justify-left items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-nav">
+                <ul class="flex flex-col mt-4 font-sm lg:flex-row lg:space-x-8 lg:mt-0 lg:border-l lg:pl-6">
                     {% for tab in tabs %}
                     <li>
-                        <a href="{{ tab.url }}" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-200 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">{{ tab.name }}</a>
+                        <a href="{{ tab.url }}" class="block py-2 pr-4 pl-3 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0">{{ tab.name }}</a>
                     </li>
                     {% endfor %}
                 </ul>

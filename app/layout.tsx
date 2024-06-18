@@ -13,6 +13,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="zh">
       <head>
         <link rel="icon" type="image/svg" href="/logo.svg"/>
+        {/* <script src="https://cdn.tailwindcss.com"></script> */}
+        <script src={`https://unpkg.steedos.cn/flowbite@2.3.0/dist/flowbite.min.js`}></script>
+
       </head>
       <body>
           {children}
