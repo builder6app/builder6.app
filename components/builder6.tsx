@@ -2,7 +2,7 @@
  * @Author: baozhoutao baozhoutao@hotoa.com
  * @Date: 2024-06-19 14:37:27
  * @LastEditors: baozhoutao baozhoutao@hotoa.com
- * @LastEditTime: 2024-06-21 09:44:53
+ * @LastEditTime: 2024-06-21 10:09:55
  * @Description: 
  */
 'use client';
@@ -12,7 +12,7 @@ import '@builder6/widgets';
 
 interface BuilderPageProps {
   content: any;
-  data: any
+  data?: any
 }
 
 export function RenderBuilderContent({ content, data }: BuilderPageProps) {
