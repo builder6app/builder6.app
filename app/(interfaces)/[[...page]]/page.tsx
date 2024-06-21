@@ -1,8 +1,9 @@
 /*
- * @LastEditTime: 2024-06-16 11:45:58
- * @LastEditors: 殷亮辉 yinlianghui@hotoa.com
+ * @LastEditTime: 2024-06-21 09:36:16
+ * @LastEditors: baozhoutao baozhoutao@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+
 import React from 'react';
 import { builder, Builder } from '@builder6/sdk';
 import Head from 'next/head';
@@ -18,6 +19,7 @@ interface PageProps {
   params: {
     page: string[];
   };
+  searchParams: any
 }
 
 const endpointUrl = process.env.B6_CLOUD_API
@@ -27,7 +29,6 @@ const bjs = new BuilderJS({endpointUrl, apiKey});
 const metaBase = bjs.base("meta-builder6-com");
 
 const getPage = async (pageUrl: string) => {
-
   const headersList = headers()
 
   // 从请求头中获取主机名，开发环境可配置环境变量
@@ -56,6 +57,21 @@ const getPage = async (pageUrl: string) => {
   return page;
 }
 
+const getPageInitCtx = (params: any, searchParams:any, page: any)=>{
+  return {
+    params: params,
+    searchParams: searchParams,
+    tables: bjs.base(`spc-${page.space}`)
+  }
+}
+
+const runPageInitFunction = async (params: any, searchParams: any, page: any)=>{
+  const ctx = getPageInitCtx(params, searchParams, page);
+  const fun: any = new Function('ctx', page.init_function)
+  const result = fun(ctx) || {}
+  return result
+}
+
 
 export async function generateMetadata({ params }: PageProps,
   parent: ResolvingMetadata
@@ -77,12 +93,14 @@ const amisVersion = Builder.settings["amisVersion"] || '6.5.0';
 const amisTheme = Builder.settings["amisTheme"] || 'antd';
 
  
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
 
   const pageUrl = '/' + (params.page?.join('/') || '');
   try {
 
     const page = await getPage(pageUrl) as any;
+    // console.log('Retrieved page', page.name, page.builder)
+    const { data = {} } = await runPageInitFunction(params, searchParams, page); 
 
     if (page && page.builder) {
       const builderJson = JSON.parse(page.builder)
@@ -95,13 +113,13 @@ export default async function Page({ params }: PageProps) {
           <link rel="stylesheet" href={`${unpkgUrl}/@salesforce-ux/design-system@2.24.3/css/icons/base/index.css`}/>
 
           {/* Render the Builder page */}
-          <RenderBuilderContent content={builderJson}/>
+          <RenderBuilderContent content={builderJson} data={data}/>
         </>
       );
     }
 
   } catch (error) {
-    console.error(error);
+    console.error('error', error);
   }
 
   return notFound();
