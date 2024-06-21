@@ -71,8 +71,8 @@ export default async function AppLayout( { params, children }: PageProps) {
 
   // 使用正则表达式提取前缀
   let projectId = project_id;
-  const baseId = "meta-builder6-com";
-  // const baseId = `spc-${params.spaceId}`;
+  // const baseId = "meta-builder6-com";
+  const baseId = `spc-${params.spaceId}`;
 
   if (!projectId) return (<>projectId not found</>);
 
