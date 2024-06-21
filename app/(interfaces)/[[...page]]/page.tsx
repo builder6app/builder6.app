@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-21 09:36:16
+ * @LastEditTime: 2024-06-21 10:49:03
  * @LastEditors: baozhoutao baozhoutao@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -61,14 +61,14 @@ const getPageInitCtx = (params: any, searchParams:any, page: any)=>{
   return {
     params: params,
     searchParams: searchParams,
-    tables: bjs.base(`spc-${page.space}`)
+    base: bjs.base(`spc-${page.space}`)
   }
 }
 
 const runPageInitFunction = async (params: any, searchParams: any, page: any)=>{
   const ctx = getPageInitCtx(params, searchParams, page);
-  const fun: any = new Function('ctx', page.init_function)
-  const result = fun(ctx) || {}
+  const fun: any = new Function('params', 'searchParams', 'base', page.init_function)
+  const result = fun(ctx.params, ctx.searchParams, ctx.base) || {}
   return result
 }
 
