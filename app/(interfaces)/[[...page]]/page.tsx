@@ -34,15 +34,9 @@ const getPageInitCtx = (params: any, searchParams:any, page: any)=>{
 const runPageInitFunction = async (params: any, searchParams: any, page: any)=>{
   if (!page.enabled_init) return {data: {}}
   const ctx = getPageInitCtx(params, searchParams, page);
-  console.log(ctx)
-  try {
-    const dynamicAsyncFunction = eval(`(async function(params, searchParams, base) { ${page.init_function} })`);
-    const result = await dynamicAsyncFunction(ctx.params, ctx.searchParams, ctx.base)
-    return result
-  } catch (e) {
-    console.log(e);
-    return {data: {}}
-  }
+  const dynamicAsyncFunction = eval(`(async function(params, searchParams, base) { ${page.init_function} })`);
+  const result = await dynamicAsyncFunction(ctx.params, ctx.searchParams, ctx.base)
+  return result
 }
 
 
@@ -74,16 +68,18 @@ const amisTheme = process.env.B6_AMIS_THEME|| 'antd';
 export default async function Page({ params, searchParams }: PageProps) {
 
   const domain = await getDomain() as any;
+  if (!domain) return notFound();
 
   const pageUrl = '/' + (params.page?.join('/') || '');
   const baseId = `spc-${domain.space}`;
 
   const project = await getProjectById(baseId, domain.project_id);
-  if (!project) return {};
+  if (!project) return notFound();
 
   try {
 
     const page = await getProjectPageByUrl(baseId, project._id as string, pageUrl) as any;
+    if (!page) return notFound();
     const { data = {} } = await runPageInitFunction(params, searchParams, page); 
 
     if (page && page.builder) {
@@ -95,7 +91,6 @@ export default async function Page({ params, searchParams }: PageProps) {
           <script src={`${unpkgUrl}/amis@${amisVersion}/sdk/sdk.js`}></script>
           <link rel="stylesheet" href={`${unpkgUrl}/amis@${amisVersion}/sdk/${amisTheme}.css`} />
           <link rel="stylesheet" href={`${unpkgUrl}/@salesforce-ux/design-system@2.24.3/css/icons/base/index.css`}/>
-          <script src={`${unpkgUrl}/flowbite@2.3.0/dist/flowbite.min.js`}></script>
 
           {/* Render the Builder page */}
           <RenderBuilderContent content={builderJson} data={data}/>
