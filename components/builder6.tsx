@@ -17,7 +17,7 @@ interface BuilderPageProps {
 
 export function RenderBuilderContent({ content, data }: BuilderPageProps) {
   const isPreviewing = useIsPreviewing();
-  console.log(`RenderBuilderContent data`, data, content)
+  // console.log(`RenderBuilderContent data`, data, content)
   if (content || isPreviewing) {
     return (
       <BuilderComponent 
