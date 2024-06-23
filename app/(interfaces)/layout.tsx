@@ -9,6 +9,8 @@ import BuilderJS from '@builder6/builder6.js'
 import { RenderBuilderContent } from '@/components/builder6';
 import LiquidTemplate from '@/components/liquid-template';
 import { headers } from 'next/headers';
+import { defaultMainMenu, getComponent, getProjectById } from '@/lib/interfaces';
+import { notFound } from 'next/navigation';
 
 interface PageProps {
   params: {
@@ -53,9 +55,6 @@ const NAV_DEFAULT = `
 const endpointUrl = process.env.B6_CLOUD_API
 const apiKey = process.env.B6_CLOUD_PROJECT_SECRET
 
-const bjs = new BuilderJS({endpointUrl, apiKey});
-const metaBase = bjs.base("meta-builder6-com");
-
 
 export default async function AppLayout( { params, children }: PageProps) {
 
@@ -67,51 +66,42 @@ export default async function AppLayout( { params, children }: PageProps) {
 
   // 使用正则表达式提取前缀
   let domainName = host?.split('.')[0] || "";
+
+  const bjs = new BuilderJS({endpointUrl, apiKey});
+  const metaBase = bjs.base("meta-builder6-com");
+
   const domain: any = await metaBase('b6_domains').find(domainName);
-  console.log('Retrieved domain', domain.id);
-  if (!domain) return (<>domain not found</>);
+  if (!domain) return notFound();
 
   const {project_id, space} = domain.fields;
 
-  // 使用正则表达式提取前缀
-  let projectId = project_id;
-  const baseId = "meta-builder6-com";
-  // const baseId = `spc-${params.spaceId}`;
+  console.log('layout', params)
 
-  if (!projectId) return (<>projectId not found</>);
+  const baseId = `spc-${space}`;
 
-  let headerJson = {};
+  let project = await getProjectById(baseId, project_id);
+  if (!project) return notFound();
 
-  const base = await bjs.base(baseId);
   
-  const project = await base('b6_projects').find(projectId); 
-  if (!project) return (<>project not found:{projectId}</>);
+  let headerContent = await getComponent(baseId, "header");
+  let mainMenuContent = project?.enable_tabs && (await getComponent(baseId, "main-menu") || defaultMainMenu);
+  let footerContent = await getComponent(baseId, "footer");
 
-  const headerId = project?.fields.header as string;   
-  if (headerId) {
-    const header = await base('b6_components').find(headerId);
-    if (header?.fields.builder) {
-      try {
-        headerJson = JSON.parse(header?.fields.builder as string);
-        // console.log('Retrieved builderJson', builderJson);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
-
-  const enable_tabs = project?.fields.enable_tabs;
-  const tabs = project?.fields.tabs;
-
+  
   return (
     <>
-        {headerJson && (
-          <RenderBuilderContent content={headerJson} />
+        {headerContent && (
+          <RenderBuilderContent content={headerContent} />
         )}
-        {enable_tabs && tabs && (
-          <LiquidTemplate template={NAV_DEFAULT} data={{...project.fields}}/>
+        {mainMenuContent && (
+          <div className='sticky z-10 top-0 left-0 w-full'>
+            <RenderBuilderContent content={mainMenuContent} data={{...project}}/>
+          </div>
         )}
         {children}
+        {footerContent && (
+          <RenderBuilderContent content={footerContent} />
+        )}
     </>
   );
 }

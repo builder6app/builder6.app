@@ -13,6 +13,7 @@ import BuilderJS from '@builder6/builder6.js'
 import { RenderBuilderContent } from '@/components/builder6';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
+import { adminBjs, getDomain, getProjectById, getProjectPageByUrl } from '@/lib/interfaces';
 
 
 interface PageProps {
@@ -22,54 +23,26 @@ interface PageProps {
   searchParams: any
 }
 
-const endpointUrl = process.env.B6_CLOUD_API
-const apiKey = process.env.B6_CLOUD_PROJECT_SECRET
-
-const bjs = new BuilderJS({endpointUrl, apiKey});
-const metaBase = bjs.base("meta-builder6-com");
-
-const getPage = async (pageUrl: string) => {
-  const headersList = headers()
-
-  // 从请求头中获取主机名，开发环境可配置环境变量
-  const host = process.env.NEXT_PUBLIC_B6_HOST_OVERRIDE || headersList.get('host');
-
-  // 使用正则表达式提取前缀
-  let domainName = host?.split('.')[0] || "";
-  const domain: any = await metaBase('b6_domains').find(domainName);
-  console.log('Retrieved domain', domain.id);
-  if (!domain) return (<>domain not found</>);
-
-  const {project_id, space} = domain.fields;
-
-  const base = await bjs.base(`spc-${space}`);
-
-  const pages = await base("b6_pages").select({
-    'filterByFormula': `AND(url === "${pageUrl}", project_id === "${project_id}")`
-  }).firstPage();
-
-  if (!pages || pages.length === 0) {
-    return null;
-  }
-  
-  const page = pages[0].fields as {name: string, builder: any};
-
-  return page;
-}
-
 const getPageInitCtx = (params: any, searchParams:any, page: any)=>{
   return {
     params: params,
     searchParams: searchParams,
-    base: bjs.base(`spc-${page.space}`)
+    base: adminBjs.base(`spc-${page.space}`)
   }
 }
 
 const runPageInitFunction = async (params: any, searchParams: any, page: any)=>{
+  if (!page.enabled_init) return {data: {}}
   const ctx = getPageInitCtx(params, searchParams, page);
-  const dynamicAsyncFunction = eval(`(async function(params, searchParams, base) { ${page.init_function} })`);
-  const result = await dynamicAsyncFunction(ctx.params, ctx.searchParams, ctx.base)
-  return result
+  console.log(ctx)
+  try {
+    const dynamicAsyncFunction = eval(`(async function(params, searchParams, base) { ${page.init_function} })`);
+    const result = await dynamicAsyncFunction(ctx.params, ctx.searchParams, ctx.base)
+    return result
+  } catch (e) {
+    console.log(e);
+    return {data: {}}
+  }
 }
 
 
@@ -77,30 +50,43 @@ export async function generateMetadata({ params }: PageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   
-  const pageUrl = '/' + (params.page?.join('/') || '');
+  const domain = await getDomain() as any;
 
-  const page = await getPage(pageUrl) as any;
-  return {
-    title: page?.name,
-    // openGraph: {
-    //   images: ['/some-specific-page-image.jpg', ...previousImages],
-    // },
+  const pageUrl = '/' + (params.page?.join('/') || '');
+  const baseId = `spc-${domain.space}`;
+
+  const project = await getProjectById(baseId, domain.project_id);
+  if (!project) return {};
+
+  const page = await getProjectPageByUrl(baseId, project._id as string, pageUrl);
+  if (!page) return {};
+  return  {
+    title: `${page.name} - ${project.name}`,
+    // description: page.description || project.description
   }
 }
 
-const unpkgUrl = Builder.settings["unpkgUrl"] || 'https://unpkg.steedos.cn';
-const amisVersion = Builder.settings["amisVersion"] || '6.5.0';
-const amisTheme = Builder.settings["amisTheme"] || 'antd';
+const unpkgUrl = process.env.B6_UNPKG_URL || 'https://unpkg.steedos.cn';
+const amisVersion = process.env.B6_AMIS_VERSION || '6.5.0';
+const amisTheme = process.env.B6_AMIS_THEME|| 'antd';
 
  
 export default async function Page({ params, searchParams }: PageProps) {
 
+  const domain = await getDomain() as any;
+
   const pageUrl = '/' + (params.page?.join('/') || '');
+  const baseId = `spc-${domain.space}`;
+
+  const project = await getProjectById(baseId, domain.project_id);
+  if (!project) return {};
+
   try {
 
-    const page = await getPage(pageUrl) as any;
-    // console.log('Retrieved page', page.name, page.builder)
+    const page = await getProjectPageByUrl(baseId, project._id as string, pageUrl) as any;
+    console.log(page.init_function)
     const { data = {} } = await runPageInitFunction(params, searchParams, page); 
+    // const data ={}
 
     if (page && page.builder) {
       const builderJson = JSON.parse(page.builder)
