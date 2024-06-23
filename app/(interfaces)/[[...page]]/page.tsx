@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2024-06-23 14:29:18
+ * @LastEditTime: 2024-06-23 14:54:19
  * @LastEditors: baozhoutao baozhoutao@hotoa.com
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -61,7 +61,7 @@ const getPageInitCtx = (params: any, searchParams:any, page: any)=>{
   return {
     params: params,
     searchParams: searchParams,
-    base: bjs.base('spc-667791841f34e006a883c78d')
+    base: bjs.base(`spc-${page.space}`)
   }
 }
 
