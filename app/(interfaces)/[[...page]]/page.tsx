@@ -84,9 +84,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   try {
 
     const page = await getProjectPageByUrl(baseId, project._id as string, pageUrl) as any;
-    console.log(page.init_function)
     const { data = {} } = await runPageInitFunction(params, searchParams, page); 
-    // const data ={}
 
     if (page && page.builder) {
       const builderJson = JSON.parse(page.builder)
