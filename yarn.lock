@@ -162,10 +162,10 @@
     node-fetch "^2.3.0"
     tslib "^1.10.0"
 
-"@builder6/widgets@1.2.25":
-  version "1.2.25"
-  resolved "https://registry.npmjs.org/@builder6/widgets/-/widgets-1.2.25.tgz#0151e69fdf5f03fd7d1a37b9306a946c14e7cd6b"
-  integrity sha512-ImiLvNaPy9qxBQ2Rkct9w6l+NPJAWyULIdnlul4O2TzcjMQqGF3u7w/8LEov6GyfP1z4Y9mM4fQFuDewvigNOw==
+"@builder6/widgets@1.2.26":
+  version "1.2.26"
+  resolved "https://registry.npmjs.org/@builder6/widgets/-/widgets-1.2.26.tgz#71a12238ce1fa78d297b08029803b079c163e573"
+  integrity sha512-hsZWnSBnilb4BAq8/hEp8BskO1SdZKv0eVC8xG+OHrBX2nuqgyDns/7pDFzlO2aOdFMpp6KhPF5sRk3meEZo2w==
   dependencies:
     "@emotion/core" ">=10"
     "@emotion/styled" ">=10"

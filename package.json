@@ -12,7 +12,7 @@
     "@builder6/builder6.js": "^0.12.2",
     "@builder6/react": "^3.2.7",
     "@builder6/sdk": "^2.2.3",
-    "@builder6/widgets": "1.2.25",
+    "@builder6/widgets": "1.2.26",
     "@headlessui/react": "^2.0.4",
     "@headlessui/tailwindcss": "^0.2.1",
     "@heroicons/react": "^2.1.3",
