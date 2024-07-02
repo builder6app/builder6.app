@@ -80,17 +80,32 @@ export const getComponent = async (baseId: string, api_name : string) => {
 
   return null
 }
-  
-export const getDomain = async () => {
-  const headersList = headers()
 
+function getDomainName() {
+  const headersList = headers()
   // 从请求头中获取主机名，开发环境可配置环境变量
-  const host = process.env.NEXT_PUBLIC_B6_HOST_OVERRIDE || headersList.get('host');
+  const host = process.env.NEXT_PUBLIC_B6_HOST_OVERRIDE || headersList.get('host') || '';
+
+  const domainParts = host.split('.');
+  const domainName = domainParts[0];
+
+  if (host.endsWith('.builder6.app')) {
+    // 使用特定算法处理 .builder6.app 域名
+    return domainName; // 这里可以替换为你需要的算法
+  } else {
+    // 返回完整域名
+    return host;
+  }
+}
+
+export const getDomain = async () => {
 
   const metaBase = adminBjs.base("meta-builder6-com");
   
   // 使用正则表达式提取前缀
-  let domainName = host?.split('.')[0] || "";
+  let domainName = getDomainName();
+  if (!domainName) return null;
+  
   const domain: any = await metaBase('b6_domains').find(domainName);
   console.log('Retrieved domain', domain.id);
   if (!domain) return null;
