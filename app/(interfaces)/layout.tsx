@@ -4,12 +4,9 @@
  * @customMade: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import '@/styles/tailwind.css'
-import BuilderJS from '@builder6/builder6.js' 
 
 import { RenderBuilderContent } from '@/components/builder6';
-import LiquidTemplate from '@/components/liquid-template';
-import { headers } from 'next/headers';
-import { defaultMainMenu, getComponent, getDomain, getProjectById } from '@/lib/interfaces';
+import { defaultMainMenu, getComponentByApiName, getComponentById, getDomain, getProjectById } from '@/lib/interfaces';
 import { notFound } from 'next/navigation';
 
 interface PageProps {
@@ -38,13 +35,13 @@ export default async function AppLayout( { params, children }: PageProps) {
 
   
   let headerContent = null;
-  if(hiddenHeader != true){
-    headerContent = await getComponent(baseId, "header");
+  if(project.header){
+    headerContent = await getComponentById(baseId, project.header as string);
   }
-  let mainMenuContent = project?.enable_tabs && (await getComponent(baseId, "main-menu") || defaultMainMenu);
+  let mainMenuContent = project?.enable_tabs && (await getComponentByApiName(baseId, "main-menu") || defaultMainMenu);
   let footerContent = null;
-  if(hiddenFooter != true){
-    footerContent = await getComponent(baseId, "footer");
+  if(project.footer){
+    footerContent = await getComponentById(baseId, project.footer as string);
   }
   
   return (

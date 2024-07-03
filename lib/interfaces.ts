@@ -60,7 +60,7 @@ export const getProjectPageByUrl = async (baseId: string, projectId:string, page
   return page
 }
   
-export const getComponent = async (baseId: string, api_name : string) => {
+export const getComponentByApiName = async (baseId: string, api_name : string) => {
 
   const base = await adminBjs.base(baseId);
 
@@ -76,6 +76,22 @@ export const getComponent = async (baseId: string, api_name : string) => {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  return null
+}
+
+export const getComponentById = async (baseId: string, componentId : string) => {
+
+  const base = await adminBjs.base(baseId);
+
+  try {
+    const component = (await base('b6_components').find(componentId));
+  
+    console.log('Retrieved component', component?.fields._id);
+    return JSON.parse(component?.fields.builder as string);
+  } catch (e) {
+    console.error(e);
   }
 
   return null
