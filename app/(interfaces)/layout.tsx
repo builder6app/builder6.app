@@ -27,7 +27,7 @@ export default async function AppLayout( { params, children }: PageProps) {
   const domain = await getDomain() as any;
   if (!domain) return notFound();
 
-  const {project_id, space} = domain;
+  const {project_id, space, hiddenHeader, hiddenFooter} = domain;
 
   console.log('layout', params)
 
@@ -37,10 +37,15 @@ export default async function AppLayout( { params, children }: PageProps) {
   if (!project) return notFound();
 
   
-  let headerContent = await getComponent(baseId, "header");
+  let headerContent = null;
+  if(hiddenHeader != true){
+    headerContent = await getComponent(baseId, "header");
+  }
   let mainMenuContent = project?.enable_tabs && (await getComponent(baseId, "main-menu") || defaultMainMenu);
-  let footerContent = await getComponent(baseId, "footer");
-
+  let footerContent = null;
+  if(hiddenFooter != true){
+    footerContent = await getComponent(baseId, "footer");
+  }
   
   return (
     <>
