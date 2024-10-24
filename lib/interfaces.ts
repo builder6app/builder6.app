@@ -59,6 +59,23 @@ export const getProjectPageByUrl = async (baseId: string, projectId:string, page
   console.log('Retrieved page', page._id, page.name);
   return page
 }
+
+  
+export const getPageBlocks = async (baseId: string, pageId:string) => {
+
+  const base = await adminBjs.base(baseId);
+
+  const blocks = await base("b6_blocks").select({
+    'filterByFormula': `page_id === "${pageId}"`
+  }).firstPage();
+
+  if (!blocks || blocks.length === 0) {
+    return null;
+  }
+  
+  console.log('Retrieved blocks', pageId, blocks.length);
+  return blocks.map(block => block.fields) as any;
+}
   
 export const getComponentByApiName = async (baseId: string, api_name : string) => {
 

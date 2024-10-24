@@ -13,7 +13,7 @@ import BuilderJS from '@builder6/builder6.js'
 import { RenderBuilderContent } from '@/components/builder6';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
-import { adminBjs, getDomain, getProjectById, getProjectPageByUrl } from '@/lib/interfaces';
+import { adminBjs, getDomain, getProjectById, getProjectPageByUrl, getPageBlocks } from '@/lib/interfaces';
 
 
 interface PageProps {
@@ -80,6 +80,9 @@ export default async function Page({ params, searchParams }: PageProps) {
 
     const page = await getProjectPageByUrl(baseId, project._id as string, pageUrl) as any;
     if (!page) return notFound();
+
+    let blocks = await getPageBlocks(baseId, page._id);
+
     const { data = {} } = await runPageInitFunction(params, searchParams, page); 
 
     if (page && page.builder) {
@@ -94,6 +97,17 @@ export default async function Page({ params, searchParams }: PageProps) {
 
           {/* Render the Builder page */}
           <RenderBuilderContent content={builderJson} data={data}/>
+
+
+          {/* 循环blocks，并输出 RenderBuilderContent */}
+          {blocks && blocks.map((block:any, index:any) => {
+            const blockJson = JSON.parse(block.builder)
+            blockJson.name = block.name;
+            return (
+              <RenderBuilderContent key={index} content={blockJson}/>
+            )
+          })}
+
         </>
       );
     }
