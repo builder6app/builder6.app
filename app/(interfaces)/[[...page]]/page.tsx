@@ -9,6 +9,7 @@ import { builder, Builder } from '@builder6/sdk';
 import Head from 'next/head';
 import { headers } from 'next/headers'
 import BuilderJS from '@builder6/builder6.js' 
+import _ from 'lodash';
 
 import { RenderBuilderContent } from '@/components/builder6';
 import { Metadata, ResolvingMetadata } from 'next';
@@ -82,6 +83,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     if (!page) return notFound();
 
     let blocks = await getPageBlocks(baseId, page._id);
+    blocks = _.orderBy(blocks, [(item: any) => item['sort']], ['asc']);
 
     const { data = {} } = await runPageInitFunction(params, searchParams, page); 
 
